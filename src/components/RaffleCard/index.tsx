@@ -3,7 +3,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
 } from "@tanstack/react-table";
 import {
   Edit2,
@@ -97,7 +96,7 @@ const RaffleCard: React.FC<RaffleCardProps> = ({ raffles }) => {
     );
   };
 
-  const columns: ColumnDef<Raffle>[] = [
+  const columns = [
     columnHelper.accessor("fechaRifa", { header: "Fecha de juego" }),
     columnHelper.accessor("loteria", { header: "Lotería" }),
     columnHelper.accessor("premio", { header: "Premio" }),
