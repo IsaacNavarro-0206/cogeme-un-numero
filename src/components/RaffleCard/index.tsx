@@ -1,9 +1,12 @@
 import {
-  CalendarDays,
-  CircleDollarSign,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
   Edit2,
   Eye,
-  Gift,
   PlusCircle,
   Share2,
   Ticket,
@@ -31,30 +34,25 @@ interface RaffleCardProps {
   raffles: Raffle[];
 }
 
-const RaffleCard: React.FC<RaffleCardProps> = () => {
+const columnHelper = createColumnHelper<Raffle>();
+
+const RaffleCard: React.FC<RaffleCardProps> = ({ raffles }) => {
   const { toast } = useToast();
   const [raffleToDelete, setRaffleToDelete] = useState<number>(0);
   const { pathname } = useLocation();
-
-  const { error, deleteRaffleZ, raffles, setRaffles } = useRaffleStore();
+  const { error, deleteRaffleZ, raffles: storedRaffles, setRaffles } = useRaffleStore();
 
   const deleteRaffle = async () => {
-    // Store current state for potential rollback
-    const previousRaffles = [...raffles];
-
+    const previousRaffles = [...storedRaffles];
     deleteRaffleZ(raffleToDelete);
 
     if (!error) {
-      toast({
-        title: "Éxito",
-        description: "Rifa eliminada correctamente",
-      });
+      toast({ title: "Éxito", description: "Rifa eliminada correctamente" });
     } else {
       setRaffles(previousRaffles);
-
       toast({
         title: "Error",
-        content: "Error al eliminar la rifa",
+        description: "Error al eliminar la rifa",
         variant: "destructive",
       });
     }
@@ -66,25 +64,21 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
         <Button
           variant="destructive"
           size="icon"
+          aria-label="Eliminar rifa"
           onClick={() => setRaffleToDelete(id)}
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 data-icon="inline-start" />
         </Button>
       </AlertDialogTrigger>
-
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-
           <AlertDialogDescription>
-            Esta acción no se puede deshacer. Se eliminará la rifa
-            permanentemente.
+            Esta acción no se puede deshacer. Se eliminará la rifa permanentemente.
           </AlertDialogDescription>
         </AlertDialogHeader>
-
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-
           <AlertDialogAction onClick={deleteRaffle} className="bg-destructive">
             Eliminar
           </AlertDialogAction>
@@ -93,137 +87,104 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
     </AlertDialog>
   );
 
-  const shareLinkRaffleSheet = (
-    raffleId: number,
-    userId: string | undefined
-  ) => {
+  const shareLinkRaffleSheet = (raffleId: number, userId: string | undefined) => {
     const link = `${window.location.origin}/choose-number/${raffleId}/${userId}`;
 
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        toast({
-          title: "Enlace copiado",
-          description:
-            "El enlace para seleccionar número ha sido copiado al portapapeles.",
-        });
-      })
-      .catch(() => {
-        toast({
-          title: "Error",
-          description:
-            "No se pudo copiar el enlace. Por favor, inténtalo de nuevo.",
-          variant: "destructive",
-        });
-      });
+    navigator.clipboard.writeText(link).then(
+      () => toast({ title: "Enlace copiado", description: "El enlace para seleccionar número ha sido copiado al portapapeles." }),
+      () => toast({ title: "Error", description: "No se pudo copiar el enlace. Por favor, inténtalo de nuevo.", variant: "destructive" }),
+    );
   };
 
-  return raffles.length === 0 ? (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-      <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Ticket className="w-8 h-8 text-pink-600" />
-      </div>
-
-      <h2 className="text-xl font-semibold text-gray-900 mb-2">
-        No tienes rifas creadas
-      </h2>
-
-      <p className="text-gray-500 mb-6">
-        Comienza creando tu primera rifa y empieza a ganar premios
-      </p>
-
-      <Link
-        to="/create-raffle"
-        className="inline-flex items-center px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors"
-      >
-        <PlusCircle className="w-4 h-4 mr-2" />
-        Crear mi primera rifa
-      </Link>
-    </div>
-  ) : (
-    <div className="space-y-4">
-      {raffles.map((raffle) => (
-        <div
-          key={raffle.id}
-          className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <div className="w-5 h-5 mt-1 mr-2 text-gray-400">
-                  <CalendarDays className="w-5 h-5" />
-                </div>
-
-                <p className="text-sm text-gray-500">
-                  Fecha de juego: {raffle.fechaRifa}
-                </p>
-              </div>
-
-              <div className="flex items-center">
-                <div className="w-5 h-5 mt-1 mr-2 text-gray-400">
-                  <Ticket className="w-5 h-5" />
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Lotería a jugar: {raffle.loteria}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <div className="w-5 h-5 mt-1 mr-2 text-gray-400">
-                  <Gift className="w-5 h-5" />
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Premio: {raffle.premio}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <div className="w-5 h-5 mt-1 mr-2 text-gray-400">
-                  <CircleDollarSign className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">
-                    Precio por número: {raffle.precioNumero}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 md:border-l md:pl-6">
-              <Link to={pathname} state={{ raffle }}>
-                <Button
-                  className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors"
-                  onClick={() => shareLinkRaffleSheet(raffle.id, getUserId())}
-                >
-                  <Share2 className="w-4 h-4" />
-                </Button>
-              </Link>
-
-              <Link to={`/edit-raffle/${raffle.id}`} state={{ raffle }}>
-                <Button className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
-                  <Edit2 className="w-4 h-4" />
-                </Button>
-              </Link>
-
-              <Link to={`/my-raffle/${raffle.id}`} state={{ raffle }}>
-                <Button className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors">
-                  <Eye className="w-4 h-4" />
-                </Button>
-              </Link>
-
-              {alertDialogDelete(raffle.id)}
-            </div>
+  const columns = [
+    columnHelper.accessor("fechaRifa", { header: "Fecha de juego" }),
+    columnHelper.accessor("loteria", { header: "Lotería" }),
+    columnHelper.accessor("premio", { header: "Premio" }),
+    columnHelper.accessor("precioNumero", { header: "Precio por número" }),
+    columnHelper.display({
+      id: "actions",
+      header: "Acciones",
+      cell: ({ row }) => {
+        const raffle = row.original;
+        return (
+          <div className="flex items-center justify-end gap-2">
+            <Link to={pathname} state={{ raffle }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Compartir rifa"
+                className="text-orange-600 hover:bg-orange-50 hover:text-orange-700"
+                onClick={() => shareLinkRaffleSheet(raffle.id, getUserId())}
+              >
+                <Share2 data-icon="inline-start" />
+              </Button>
+            </Link>
+            <Link to={`/edit-raffle/${raffle.id}`} state={{ raffle }}>
+              <Button variant="ghost" size="icon" aria-label="Editar rifa" className="text-blue-600 hover:bg-blue-50 hover:text-blue-700">
+                <Edit2 data-icon="inline-start" />
+              </Button>
+            </Link>
+            <Link to={`/my-raffle/${raffle.id}`} state={{ raffle }}>
+              <Button variant="ghost" size="icon" aria-label="Ver rifa" className="text-muted-foreground hover:bg-muted">
+                <Eye data-icon="inline-start" />
+              </Button>
+            </Link>
+            {alertDialogDelete(raffle.id)}
           </div>
+        );
+      },
+    }),
+  ];
+
+  const table = useReactTable({ data: raffles, columns, getCoreRowModel: getCoreRowModel() });
+
+  if (raffles.length === 0) {
+    return (
+      <div className="rounded-xl border bg-card p-8 text-center shadow-sm">
+        <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-pink-100">
+          <Ticket className="size-8 text-pink-600" />
         </div>
-      ))}
+        <h2 className="mb-2 text-xl font-semibold">No tienes rifas creadas</h2>
+        <p className="mb-6 text-muted-foreground">Comienza creando tu primera rifa y empieza a ganar premios</p>
+        <Link to="/create-raffle" className="inline-flex items-center rounded-lg bg-pink-600 px-4 py-2 text-white transition-colors hover:bg-pink-700">
+          <PlusCircle data-icon="inline-start" />
+          Crear mi primera rifa
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[760px] caption-bottom text-sm">
+          <thead className="border-b bg-muted/50">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="h-12 px-4 text-left align-middle font-medium text-muted-foreground last:text-right">
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="border-b transition-colors hover:bg-muted/40 last:border-0">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="p-4 align-middle last:text-right">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
 
 export default RaffleCard;
+export type { RaffleCardProps };
