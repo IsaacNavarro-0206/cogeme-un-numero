@@ -49,10 +49,11 @@ const LoginForm = () => {
       const obj = { correoElectronico: data.email, contraseña: data.password };
       const res = await Login(obj);
 
-      console.log(res);
-
       if (res.status === 201) {
         const { access_token, refresh_token } = res.data;
+        if (!access_token || !refresh_token) {
+          throw new Error("Respuesta de autenticación incompleta");
+        }
         setAuth(access_token, refresh_token);
 
         toast({

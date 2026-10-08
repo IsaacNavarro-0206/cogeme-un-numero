@@ -5,7 +5,18 @@ export const getUserId = () => {
 
   if (!token) return;
 
-  const decoded = jwtDecode(token);
+  try {
+    const decoded = jwtDecode<{ sub?: string }>(token);
+    return decoded.sub;
+  } catch {
+    if (token.startsWith("local-")) {
+      try {
+        return atob(token.slice("local-".length)).split(":")[0];
+      } catch {
+        return token;
+      }
+    }
 
-  return decoded.sub;
+    return token;
+  }
 };

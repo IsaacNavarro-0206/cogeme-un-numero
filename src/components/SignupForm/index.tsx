@@ -65,11 +65,20 @@ const SignupForm = () => {
         telefono: data.phone,
       };
 
-      await Signup(obj);
+      const res = await Signup(obj);
+
+      if (res.status !== 201) {
+        toast({
+          title: "No se pudo registrar",
+          description: res.data.message,
+          variant: "destructive",
+        });
+        return;
+      }
 
       toast({
         title: "¡Registro exitoso!",
-        description: "Tu cuenta ha sido creada correctamente",
+        description: "Tu cuenta ha sido creada correctamente en este navegador",
       });
 
       navigate("/login");

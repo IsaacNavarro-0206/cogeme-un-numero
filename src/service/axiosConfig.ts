@@ -69,10 +69,16 @@ axiosInstance.interceptors.response.use(
       try {
         // Intenta renovar el token usando el refresh_token
         const refreshToken = localStorage.getItem("refresh_token");
+        if (!refreshToken) {
+          throw new Error("No hay refresh token disponible");
+        }
         const response = await RefreshToken(refreshToken);
 
         // Almacena el nuevos token
         const { access_token } = response.data;
+        if (!access_token) {
+          throw new Error("No se recibió un token renovado");
+        }
         localStorage.setItem("access_token", access_token);
 
         // Actualiza el header por defecto con el nuevo token
