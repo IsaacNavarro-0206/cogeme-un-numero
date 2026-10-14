@@ -12,7 +12,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { GetUser, UpdateUser } from "@/service/user";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,7 +40,6 @@ export type EditProfileDataForm = yup.InferType<typeof schema>;
 const EditProfileForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEnableInputs, setIsEnableInputs] = useState(false);
-  const { toast } = useToast();
   const { id } = useParams();
 
   const {
@@ -89,18 +88,15 @@ const EditProfileForm = () => {
 
       await UpdateUser(obj, id);
 
-      toast({
-        title: "¡Actualización exitosa!",
+      toast.success("¡Actualización exitosa!", {
         description: "Tu cuenta ha sido actualizada correctamente",
       });
     } catch (error) {
       console.log(error);
 
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description:
           "No se pudo actualizar el perfil. Por favor intenta nuevamente",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

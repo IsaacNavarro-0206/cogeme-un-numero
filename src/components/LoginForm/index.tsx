@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Login } from "@/service/auth";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import { useAuthStore } from "@/store/auth/slice";
 
@@ -31,7 +31,6 @@ interface LoginDataForm {
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { setAuth } = useAuthStore();
-  const { toast } = useToast();
 
   const {
     register,
@@ -55,15 +54,12 @@ const LoginForm = () => {
         const { access_token, refresh_token } = res.data;
         setAuth(access_token, refresh_token);
 
-        toast({
-          title: "¡Bienvenido!",
+        toast.success("¡Bienvenido!", {
           description: "Has iniciado sesión correctamente",
         });
       } else {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: res.data.message,
-          variant: "destructive",
         });
       }
     } catch (error) {

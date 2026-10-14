@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -31,8 +31,6 @@ const RaffleSheet = ({
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const [numbersStatus, setNumbersStatus] = useState<ChoosenNumber[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
   const {
     register,
     handleSubmit,
@@ -92,17 +90,13 @@ const RaffleSheet = ({
       setSelectedNumbers([]);
       getNumbers();
 
-      toast({
-        title: "Número(s) seleccionado(s)!",
-      });
+      toast.success("Número(s) seleccionado(s)!");
     } catch (error) {
       console.log(error);
 
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description:
           "No se pudo seleccionar el/los número(s). Por favor intenta nuevamente",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

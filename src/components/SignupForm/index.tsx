@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Signup } from "@/service/auth";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 
 const schema = yup.object().shape({
@@ -43,7 +43,6 @@ interface SignupDataForm {
 const SignupForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   const {
     register,
@@ -67,8 +66,7 @@ const SignupForm = () => {
 
       await Signup(obj);
 
-      toast({
-        title: "¡Registro exitoso!",
+      toast.success("¡Registro exitoso!", {
         description: "Tu cuenta ha sido creada correctamente",
       });
 
@@ -76,10 +74,8 @@ const SignupForm = () => {
     } catch (error) {
       console.log(error);
 
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "No se pudo crear la cuenta. Por favor intenta nuevamente",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

@@ -1,11 +1,10 @@
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import RaffleForm from "../RaffleForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRaffleStore } from "@/store/raffles/slice";
 
 const EditRaffleForm = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { id } = useParams();
 
   const { updateRaffle, isLoading, error } = useRaffleStore();
@@ -22,17 +21,14 @@ const EditRaffleForm = () => {
     updateRaffle(id, obj);
 
     if (!error) {
-      toast({
-        title: "¡Rifa actualizada!",
+      toast.success("¡Rifa actualizada!", {
         description: "La rifa se ha actualizado correctamente",
       });
 
       navigate("/my-raffles");
     } else {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "No se pudo actualizar la rifa",
-        variant: "destructive",
       });
     }
   };
