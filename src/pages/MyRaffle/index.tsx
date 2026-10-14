@@ -12,18 +12,18 @@ const MyRaffle = () => {
 
       <br />
 
-      <Tabs defaultValue="pending" className="max-w-2xl flex flex-col w-11/12">
+      <Tabs defaultSelectedKey="pending" className="max-w-2xl flex flex-col w-11/12">
         <TabsList className="grid w-full grid-cols-2 mb-4">
-          <TabsTrigger value="pending">Solicitudes Pendientes</TabsTrigger>
+          <TabsTrigger id="pending">Solicitudes Pendientes</TabsTrigger>
 
-          <TabsTrigger value="accepted">Números Aceptados</TabsTrigger>
+          <TabsTrigger id="accepted">Números Aceptados</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="pending">
+        <TabsContent id="pending">
           <RequestCard />
         </TabsContent>
 
-        <TabsContent value="accepted">
+        <TabsContent id="accepted">
           <AcceptedNumberCard />
         </TabsContent>
       </Tabs>

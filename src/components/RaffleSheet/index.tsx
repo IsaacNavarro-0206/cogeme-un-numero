@@ -124,7 +124,7 @@ const RaffleSheet = ({
 
             return (
               <Button
-                disabled={handleBlockedNumber(index)}
+                isDisabled={handleBlockedNumber(index)}
                 key={index}
                 className={`${
                   isSelected
@@ -132,7 +132,7 @@ const RaffleSheet = ({
                     : handleColorButton(index)
                 } 
                    rounded-lg text-lg font-semibold flex items-center justify-center transition-all w-full h-auto sm:h-28`}
-                onClick={() => handleSelectedNumbers(index)}
+                onPress={() => handleSelectedNumbers(index)}
               >
                 {index < 10 ? "0" + index : index}
               </Button>

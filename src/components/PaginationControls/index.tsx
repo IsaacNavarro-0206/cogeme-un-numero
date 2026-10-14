@@ -23,16 +23,17 @@ const PaginationControls = ({
   return (
     <div className="flex justify-center gap-2 mt-4">
       <Button
-        onClick={prevPage}
-        disabled={currentPage === 1}
+        onPress={prevPage}
+        isDisabled={currentPage === 1}
         className="px-4 py-2 mx-1 rounded-lg bg-pink-600 text-white/90 hover:bg-pink-700 transition-colors"
       >
         Anterior
       </Button>
 
       <Select
+        aria-label="Página"
         value={`${currentPage}`}
-        onValueChange={(value) => {
+        onChange={(value) => {
           if (Number(value) > currentPage) {
             nextPage();
           } else {
@@ -41,12 +42,12 @@ const PaginationControls = ({
         }}
       >
         <SelectTrigger className="w-[60px] border border-gray-300 rounded-lg">
-          <SelectValue placeholder={`${currentPage}`} />
+          <SelectValue />
         </SelectTrigger>
 
         <SelectContent>
           {Array.from({ length: totalPages }).map((_, index) => (
-            <SelectItem key={index + 1} value={`${index + 1}`}>
+            <SelectItem key={index + 1} id={`${index + 1}`}>
               {index + 1}
             </SelectItem>
           ))}
@@ -54,8 +55,8 @@ const PaginationControls = ({
       </Select>
 
       <Button
-        onClick={nextPage}
-        disabled={currentPage === totalPages}
+        onPress={nextPage}
+        isDisabled={currentPage === totalPages}
         className="px-4 py-2 mx-1 rounded-lg bg-pink-600 text-white/90 hover:bg-pink-700 transition-colors"
       >
         Siguiente

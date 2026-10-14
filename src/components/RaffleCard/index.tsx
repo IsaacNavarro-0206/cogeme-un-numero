@@ -10,7 +10,6 @@ import {
   Trash2,
 } from "lucide-react";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -57,16 +56,14 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
   };
 
   const alertDialogDelete = (id: number) => (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="icon"
-          onClick={() => setRaffleToDelete(id)}
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialogTrigger>
+      <Button
+        variant="destructive"
+        size="icon"
+        onPress={() => setRaffleToDelete(id)}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
 
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -81,12 +78,12 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
-          <AlertDialogAction onClick={deleteRaffle} className="bg-destructive">
+          <AlertDialogAction onPress={deleteRaffle} className="bg-destructive">
             Eliminar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialogTrigger>
   );
 
   const shareLinkRaffleSheet = (
