@@ -1,10 +1,9 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 import { Button } from "../ui/button";
 import { LogOut, Menu } from "lucide-react";
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
@@ -50,6 +49,9 @@ function LogoutButton() {
 }
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuthStore();
+
   return (
     <nav className="bg-white shadow-sm z-50 w-full">
       <div className="flex justify-between items-center h-16">
@@ -71,34 +73,32 @@ const NavBar = () => {
         </div>
 
         <div className="lg:hidden flex">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </DropdownMenuTrigger>
+          <DropdownMenuTrigger>
+            <Button variant="outline" size="icon" aria-label="Abrir menú">
+              <Menu className="h-6 w-6" />
+            </Button>
 
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuItem>
-                <NavButton href="/my-raffles" className="w-full text-center">
-                  Mis rifas
-                </NavButton>
+            <DropdownMenu className="w-56">
+              <DropdownMenuItem onAction={() => navigate("/my-raffles")}>
+                Mis rifas
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <NavButton
-                  href={`/profile/${getUserId()}`}
-                  className="w-full text-center"
-                >
-                  Perfil
-                </NavButton>
+              <DropdownMenuItem
+                onAction={() => navigate(`/profile/${getUserId()}`)}
+              >
+                Perfil
               </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <LogoutButton />
+              <DropdownMenuItem
+                className="text-pink-600"
+                onAction={logout}
+                textValue="Cerrar Sesión"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Cerrar Sesión
               </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </DropdownMenu>
+          </DropdownMenuTrigger>
         </div>
       </div>
     </nav>

@@ -15,7 +15,7 @@ import {
   GetChoosenNumbers,
   UpdateStatusChoosenNumber,
 } from "@/service/choosenNumber";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState, useCallback, useEffect } from "react";
 import RequestItem from "../RequestItem";
 import EmptyState from "../EmptyState";
@@ -24,8 +24,6 @@ import { useParams } from "react-router-dom";
 const RequestCard = () => {
   // Estado para almacenar las solicitudes pendientes
   const [requests, setRequests] = useState<RequestNumber[]>([]);
-
-  const { toast } = useToast();
 
   const { id } = useParams();
 
@@ -46,10 +44,8 @@ const RequestCard = () => {
         setRequests(filteredNumbersByStatusPending);
       } catch (error) {
         console.log(error);
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: "Hubo un problema al obtener los números solicitados.",
-          variant: "destructive",
         });
       }
     };
@@ -74,24 +70,24 @@ const RequestCard = () => {
         await UpdateStatusChoosenNumber({ estado: status }, id);
         setRequests((prev) => prev.filter((request) => request.id !== id));
 
-        toast({
-          title: `Solicitud ${
+        toast.success(
+          `Solicitud ${
             status === "aceptado" ? "aceptada" : "rechazada"
           }`,
-          description: `El número ha sido ${
-            status === "aceptado" ? "aceptado" : "rechazado"
-          }.`,
-        });
+          {
+            description: `El número ha sido ${
+              status === "aceptado" ? "aceptado" : "rechazado"
+            }.`,
+          }
+        );
       } catch (error) {
         console.error(error);
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: "Hubo un problema al procesar la solicitud.",
-          variant: "destructive",
         });
       }
     },
-    [toast]
+    []
   );
 
   return (

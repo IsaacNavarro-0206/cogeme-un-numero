@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { usePagination } from "@/hooks/usePagination";
 import PaginationControls from "../PaginationControls";
 import { GetChoosenNumbers } from "@/service/choosenNumber";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import EmptyState from "../EmptyState";
 import AcceptedNumberItem from "../AcceptedNumberItem";
@@ -21,8 +21,6 @@ import { useParams } from "react-router-dom";
 const AcceptedNumberCard = () => {
   // Estado para almacenar solo los números con estado "aceptado"
   const [filteredAcceptedNumbers, setFilteredAcceptedNumbers] = useState<RequestNumber[]>([]);
-  const { toast } = useToast();
-
   const { id } = useParams();
 
   /**
@@ -42,16 +40,14 @@ const AcceptedNumberCard = () => {
         setFilteredAcceptedNumbers(filteredNumbersByStatusAccepted);
       } catch (error) {
         console.log(error);
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: "Hubo un problema al obtener los números aceptados.",
-          variant: "destructive",
         });
       }
     };
 
     getChoosenNumbers();
-  }, [id, toast]);
+  }, [id]);
 
   // Configuración de paginación para los números aceptados
   const { currentItems, currentPage, totalPages, nextPage, prevPage } =

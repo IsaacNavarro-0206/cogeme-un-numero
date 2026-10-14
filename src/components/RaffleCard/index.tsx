@@ -10,7 +10,6 @@ import {
   Trash2,
 } from "lucide-react";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import { getUserId } from "@/utils/auth";
 import { useRaffleStore } from "@/store/raffles/slice";
@@ -32,7 +31,6 @@ interface RaffleCardProps {
 }
 
 const RaffleCard: React.FC<RaffleCardProps> = () => {
-  const { toast } = useToast();
   const [raffleToDelete, setRaffleToDelete] = useState<number>(0);
   const { pathname } = useLocation();
 
@@ -45,32 +43,27 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
     deleteRaffleZ(raffleToDelete);
 
     if (!error) {
-      toast({
-        title: "Éxito",
+      toast.success("Éxito", {
         description: "Rifa eliminada correctamente",
       });
     } else {
       setRaffles(previousRaffles);
 
-      toast({
-        title: "Error",
-        content: "Error al eliminar la rifa",
-        variant: "destructive",
+      toast.error("Error", {
+        description: "Error al eliminar la rifa",
       });
     }
   };
 
   const alertDialogDelete = (id: number) => (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="icon"
-          onClick={() => setRaffleToDelete(id)}
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      </AlertDialogTrigger>
+    <AlertDialogTrigger>
+      <Button
+        variant="destructive"
+        size="icon"
+        onPress={() => setRaffleToDelete(id)}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
 
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -85,12 +78,12 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
-          <AlertDialogAction onClick={deleteRaffle} className="bg-destructive">
+          <AlertDialogAction onPress={deleteRaffle} className="bg-destructive">
             Eliminar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialogTrigger>
   );
 
   const shareLinkRaffleSheet = (
@@ -102,18 +95,15 @@ const RaffleCard: React.FC<RaffleCardProps> = () => {
     navigator.clipboard
       .writeText(link)
       .then(() => {
-        toast({
-          title: "Enlace copiado",
+        toast.success("Enlace copiado", {
           description:
             "El enlace para seleccionar número ha sido copiado al portapapeles.",
         });
       })
       .catch(() => {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description:
             "No se pudo copiar el enlace. Por favor, inténtalo de nuevo.",
-          variant: "destructive",
         });
       });
   };

@@ -1,6 +1,5 @@
 // import { useParams } from "react-router-dom";
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -28,10 +27,8 @@ const ButtonDeleteProfile = () => {
   // };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">Eliminar cuenta</Button>
-      </AlertDialogTrigger>
+    <AlertDialogTrigger>
+      <Button variant="destructive">Eliminar cuenta</Button>
 
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -53,7 +50,7 @@ const ButtonDeleteProfile = () => {
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialog>
+    </AlertDialogTrigger>
   );
 };
 
