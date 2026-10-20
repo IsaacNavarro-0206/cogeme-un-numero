@@ -1,7 +1,7 @@
-import CreateRaffleForm from "@/components/CreateRaffleForm";
+import { RaffleForm } from "@/features/raffles/components";
 
 const CreateRafflePage = () => {
-  return <CreateRaffleForm />;
+  return <RaffleForm />;
 };
 
 export default CreateRafflePage;

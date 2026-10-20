@@ -1,7 +1,7 @@
-import EditRaffleForm from "@/components/EditRaffleForm";
+import { RaffleForm } from "@/features/raffles/components";
 
 const EditRafflePage = () => {
-  return <EditRaffleForm />;
+  return <RaffleForm isEditMode={true} />;
 };
 
 export default EditRafflePage;

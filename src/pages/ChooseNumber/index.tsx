@@ -1,39 +1,15 @@
-import RaffleInfoCard from "@/components/RaffleInfoCard";
-import RaffleSheet from "@/components/RaffleSheet";
-import { GetRaffle } from "@/service/raffle";
-import { GetUser } from "@/service/user";
-import { useEffect, useState } from "react";
+import { RaffleInfoCard } from "@/features/raffles/components";
+import RaffleSheet from "@/features/raffle-sheet/components/RaffleSheet";
+import { useRaffle } from "@/features/raffles/hooks";
+import { useGetUser } from "@/features/profile/hooks";
 import { useParams } from "react-router-dom";
 
 const ChooseNumber = () => {
   const { raffleId, userId } = useParams();
-  const [raffle, setRaffle] = useState<Raffle>();
-  const [userName, setUserName] = useState("");
 
-  useEffect(() => {
-    const getRaffle = async () => {
-      try {
-        const res = await GetRaffle(Number(raffleId));
-
-        setRaffle(res?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getUserName = async () => {
-      try {
-        const res = await GetUser(Number(userId));
-
-        setUserName(res?.data.nombre);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getRaffle();
-    getUserName();
-  }, [raffleId, userId]);
+  const { data: raffle } = useRaffle(Number(raffleId));
+  const { data: user } = useGetUser(Number(userId));
+  const userName = user?.nombre || "";
 
   return (
     <>
