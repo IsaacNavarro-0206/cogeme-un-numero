@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePagination } from "@/hooks/usePagination";
 import PaginationControls from "@/components/PaginationControls";
-import { GetChoosenNumbers } from "@/service/choosenNumber";
+import { GetChoosenNumbers } from "../services/raffleSheet";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import EmptyState from "@/components/EmptyState";

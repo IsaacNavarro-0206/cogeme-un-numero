@@ -6,7 +6,7 @@ import {
   CreateRaffle,
   UpdateRaffle,
   DeleteRaffle,
-} from "@/service/raffle";
+} from "../services/raffle";
 
 export const useRaffle = (id: number) => {
   return useQuery({
