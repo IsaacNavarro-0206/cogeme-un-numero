@@ -3,54 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Mail, Lock, Loader2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { useLogin } from "../hooks/useAuth";
-import { useAuthStore } from "@/store/auth/slice";
-
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Correo electrónico no válido")
-    .required("Correo electrónico es requerido"),
-  password: yup
-    .string()
-    .min(6, "La contraseña debe tener al menos 6 caracteres")
-    .required("Contraseña es requerida"),
-});
-
-interface LoginDataForm {
-  email: string;
-  password: string;
-}
+import { Link } from "react-router-dom";
+import { useLoginForm } from "../hooks";
 
 const LoginForm = () => {
-  const { mutate: login, isPending: isLoading } = useLogin();
-  const navigate = useNavigate();
+  const { form, onSubmit, isLoading } = useLoginForm();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver<LoginDataForm>(schema),
-    mode: "onChange",
-  });
-
-  const setAuth = useAuthStore((state) => state.setAuth);
-
-  const onSubmit = (data: LoginDataForm) => {
-    login(
-      { correoElectronico: data.email, contraseña: data.password },
-      {
-        onSuccess: ({ data: response }) => {
-          setAuth(response.access_token, response.refresh_token);
-        },
-      },
-    );
-  };
+  } = form;
 
   return (
     <Card className="bg-white rounded-lg shadow-sm flex flex-col justify-center items-center sm:w-11/12 md:w-1/2 lg:w-auto mt-10">

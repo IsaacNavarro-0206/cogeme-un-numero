@@ -3,64 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Mail, Lock, User, Phone, Loader2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { useSignup } from "../hooks/useAuth";
-
-const schema = yup.object().shape({
-  name: yup.string().required("Nombre es requerido"),
-  email: yup
-    .string()
-    .email("Correo electrónico no válido")
-    .required("Correo electrónico es requerido"),
-  confirmEmail: yup
-    .string()
-    .oneOf([yup.ref("email")], "Los correos electrónicos deben coincidir")
-    .required("Confirmar correo electrónico es requerido"),
-  password: yup
-    .string()
-    .min(6, "La contraseña debe tener al menos 6 caracteres")
-    .required("Contraseña es requerida"),
-  phone: yup
-    .string()
-    .matches(/^[0-9]+$/, "El teléfono debe ser un número")
-    .min(10, "El teléfono debe tener al menos 10 dígitos")
-    .required("Teléfono es requerido"),
-});
-
-interface SignupDataForm {
-  name: string;
-  email: string;
-  confirmEmail: string;
-  phone: string;
-  password: string;
-}
+import { Link } from "react-router-dom";
+import { useSignupForm } from "../hooks";
 
 const SignupForm = () => {
-  const { mutate: signup, isPending: isLoading } = useSignup();
-  const navigate = useNavigate();
+  const { form, onSubmit, isLoading } = useSignupForm();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver<SignupDataForm>(schema),
-    mode: "onChange",
-  });
-
-  const onSubmit = async (data: SignupDataForm) => {
-    const obj = {
-      nombre: data.name,
-      correoElectronico: data.email,
-      contraseña: data.password,
-      telefono: data.phone,
-    };
-
-    await signup(obj, { onSuccess: () => navigate("/login") });
-  };
+  } = form;
 
   return (
     <Card className="bg-white rounded-lg shadow-sm flex flex-col justify-center items-center mt-2.5 md:mt-10 w-3/4 md:w-auto">
