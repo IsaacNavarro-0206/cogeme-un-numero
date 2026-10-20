@@ -14,7 +14,7 @@ interface RaffleStore {
   addRaffle: (raffle: CreateRaffleType) => Promise<void>;
   updateRaffle: (
     id: string | undefined,
-    updates: UpdateRaffleType
+    updates: UpdateRaffleType,
   ) => Promise<void>;
   deleteRaffleZ: (id: number) => Promise<void>;
   setRaffles: (raffles: Raffle[]) => void;
@@ -25,12 +25,12 @@ export const useRaffleStore = create<RaffleStore>((set) => ({
   isLoading: false,
   error: null,
 
-  fetchRaffles: async (userId) => {
+  fetchRaffles: async () => {
     set({ isLoading: true });
 
     try {
-      const response = await GetRaffles(userId);
-      set({ raffles: response.data, error: null });
+      const response = await GetRaffles();
+      set({ raffles: response.data.data, error: null });
     } catch (error) {
       console.error("Error: ", error);
 
@@ -67,7 +67,7 @@ export const useRaffleStore = create<RaffleStore>((set) => ({
 
       set((state) => ({
         raffles: state.raffles.map((raffle) =>
-          raffle.id === Number(id) ? response.data : raffle
+          raffle.id === Number(id) ? response.data : raffle,
         ),
         error: null,
       }));
