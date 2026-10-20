@@ -2,6 +2,8 @@
 @import 'tw-animate-css';
 @import '@fontsource-variable/inter';
 
+@source not '../legacy';
+
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:is(.dark *));
