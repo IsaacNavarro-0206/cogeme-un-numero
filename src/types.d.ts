@@ -29,7 +29,6 @@ interface ChoosenNumber {
 }
 
 type CreateRaffleType = {
-  usuarioId: number;
   premio: string;
   fechaRifa: string;
   numeroMaximo: number;
