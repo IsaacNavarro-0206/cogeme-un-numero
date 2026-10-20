@@ -24,10 +24,11 @@ export function DeleteRaffle(id: number) {
   });
 }
 
-export function GetRaffles(id: string | undefined) {
+export function GetRaffles(limit = 10, offset = 0) {
   return axiosInstance({
     method: "GET",
-    url: `/raffle/user/${id}`,
+    url: `/raffle`,
+    params: { limit,offset }
   });
 }
 
