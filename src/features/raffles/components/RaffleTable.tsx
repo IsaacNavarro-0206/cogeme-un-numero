@@ -1,5 +1,3 @@
-import React from 'react'
-
 const RaffleTable = () => {
   return (
     <div>RaffleTable</div>

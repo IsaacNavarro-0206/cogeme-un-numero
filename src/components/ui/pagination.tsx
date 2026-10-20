@@ -14,11 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
-
-import { type TableFeatures } from "@tanstack/react-table";
+import { type DataTableFeatures } from "./data-table-features";
 
 interface DataTablePaginationProps<TData extends RowData> {
-  table: ReactTable<TableFeatures, TData>;
+  table: ReactTable<DataTableFeatures, TData>;
 }
 
 export function DataTablePagination<TData extends RowData>({
@@ -34,17 +33,18 @@ export function DataTablePagination<TData extends RowData>({
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
+            aria-label="Rows per page"
             value={`${table.state.pagination.pageSize}`}
-            onValueChange={(value) => {
+            onChange={(value) => {
               table.setPageSize(Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.state.pagination.pageSize} />
+              <SelectValue />
             </SelectTrigger>
-            <SelectContent side="top">
+            <SelectContent placement="top">
               {[10, 20, 25, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem key={pageSize} id={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
               ))}
@@ -59,8 +59,8 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
+            onPress={() => table.setPageIndex(0)}
+            isDisabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
@@ -69,8 +69,8 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="size-8"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onPress={() => table.previousPage()}
+            isDisabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
@@ -79,8 +79,8 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="size-8"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onPress={() => table.nextPage()}
+            isDisabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
@@ -89,8 +89,8 @@ export function DataTablePagination<TData extends RowData>({
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
+            onPress={() => table.setPageIndex(table.getPageCount() - 1)}
+            isDisabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />
