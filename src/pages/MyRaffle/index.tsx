@@ -1,6 +1,6 @@
-import AcceptedNumberCard from "@/components/AcceptedNumberCard";
-import RaffleInfoCard from "@/components/RaffleInfoCard";
-import RequestCard from "@/components/RequestCard";
+import AcceptedNumberCard from "@/features/raffle-sheet/components/AcceptedNumberCard";
+import { RaffleInfoCard } from "@/features/raffles/components";
+import RequestCard from "@/features/raffle-sheet/components/RequestCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const MyRaffle = () => {
