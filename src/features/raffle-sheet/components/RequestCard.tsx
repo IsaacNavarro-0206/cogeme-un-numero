@@ -4,7 +4,7 @@ import PaginationControls from "@/components/PaginationControls";
 import {
   GetChoosenNumbers,
   UpdateStatusChoosenNumber,
-} from "@/service/choosenNumber";
+} from "../services/raffleSheet";
 import { toast } from "sonner";
 import { useState, useCallback, useEffect } from "react";
 import RequestItem from "./RequestItem";
