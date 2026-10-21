@@ -1,18 +1,18 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { GetUser, UpdateUser, DeleteUser } from "../services/profile";
+import { queryClient } from "@/config/queryClient";
 
 export const useGetUser = (id: number) => {
   return useQuery({
     queryKey: ["user", id],
     queryFn: () => GetUser(id).then((res) => res.data),
     enabled: !!id, // No ejecuta la petición si el ID no es válido
+    staleTime: 1000 * 60 * 5,
   });
 };
 
 export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: string | undefined }) =>
       UpdateUser(data, id),
@@ -34,8 +34,6 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: DeleteUser,
     onSuccess: (_, id) => {
