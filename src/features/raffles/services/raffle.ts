@@ -16,8 +16,8 @@ export function DeleteRaffle(id: number) {
 }
 
 // 4. Obtener las rifas de un usuario específico (Requiere token automático)
-export function GetRaffles() {
-  return axiosInstance.get('/raffle');
+export function GetRaffles(params: { limit: number; offset: number }) {
+  return axiosInstance.get<PaginatedResponse<Raffle>>("/raffle", { params });
 }
 
 // 5. Obtener una rifa por ID. Ahora usa la instancia centralizada y hereda los interceptores
