@@ -36,3 +36,10 @@ type CreateRaffleType = {
 };
 
 type UpdateRaffleType = Omit<CreateRaffleType, "usuarioId">;
+
+interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+}
