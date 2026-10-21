@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   GetRaffle,
@@ -6,7 +6,8 @@ import {
   CreateRaffle,
   UpdateRaffle,
   DeleteRaffle,
-} from "@/service/raffle";
+} from "../services/raffle";
+import { queryClient } from "@/config/queryClient";
 
 export const useRaffle = (id: number) => {
   return useQuery({
@@ -24,8 +25,6 @@ export const useRaffles = () => {
 };
 
 export const useCreateRaffle = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: CreateRaffle,
     onSuccess: () => {
@@ -36,8 +35,6 @@ export const useCreateRaffle = () => {
 };
 
 export const useUpdateRaffle = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: string | undefined }) =>
       UpdateRaffle(data, id),
@@ -50,8 +47,6 @@ export const useUpdateRaffle = () => {
 };
 
 export const useDeleteRaffle = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id: number) => DeleteRaffle(id),
     onSuccess: () => {

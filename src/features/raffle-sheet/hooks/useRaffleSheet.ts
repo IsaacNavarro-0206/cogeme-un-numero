@@ -1,16 +1,18 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   ChoosenNumbers,
   UpdateStatusChoosenNumber,
   GetChoosenNumbers,
   GetChoosenNumber,
 } from "../services/raffleSheet";
+import { queryClient } from "@/config/queryClient";
 
 export const useGetChoosenNumber = (id: number) => {
   return useQuery({
     queryKey: ["choosen-number", id],
     queryFn: () => GetChoosenNumber(id).then((res) => res.data),
     enabled: !!id,
+    staleTime: 1000 * 30,
   });
 };
 
@@ -19,12 +21,13 @@ export const useGetChoosenNumbers = (raffleId: string | undefined) => {
     queryKey: ["choosen-numbers", "raffle", raffleId],
     queryFn: () => GetChoosenNumbers(raffleId).then((res) => res.data),
     enabled: !!raffleId,
+    // Otros usuarios pueden apartar números en cualquier momento
+    staleTime: 1000 * 10,
+    refetchInterval: 1000 * 15,
   });
 };
 
 export const useChoosenNumbers = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ChoosenNumbers,
     onSuccess: (response) => {
@@ -42,8 +45,6 @@ export const useChoosenNumbers = () => {
 };
 
 export const useUpdateStatusChoosenNumber = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: number }) =>
       UpdateStatusChoosenNumber(data, id),

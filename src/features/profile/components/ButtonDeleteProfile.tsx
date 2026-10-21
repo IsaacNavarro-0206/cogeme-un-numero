@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-// import { DeleteUser } from "@/service/user";
+// import { DeleteUser } from "../services/profile";
 
 const ButtonDeleteProfile = () => {
   // const { id } = useParams();
