@@ -1,4 +1,5 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, keepPreviousData } from "@tanstack/react-query";
+import type { PaginationState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import {
   GetRaffle,
@@ -9,7 +10,7 @@ import {
 } from "../services/raffle";
 import { queryClient } from "@/config/queryClient";
 
-export const useRaffle = (id: number) => {
+export const useRaffle = (id: string) => {
   return useQuery({
     queryKey: ["raffle", id],
     queryFn: () => GetRaffle(id).then((res) => res.data),
@@ -17,10 +18,15 @@ export const useRaffle = (id: number) => {
   });
 };
 
-export const useRaffles = () => {
+export const useRaffles = ({ pageIndex, pageSize }: PaginationState) => {
   return useQuery({
-    queryKey: ["raffles", "user"],
-    queryFn: () => GetRaffles().then((res) => res.data),
+    queryKey: ["raffles", "user", { pageIndex, pageSize }],
+    queryFn: () =>
+      GetRaffles({ limit: pageSize, offset: pageIndex * pageSize }).then(
+        (res) => res.data,
+      ),
+    // Mantiene la página anterior visible mientras carga la siguiente
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -48,7 +54,7 @@ export const useUpdateRaffle = () => {
 
 export const useDeleteRaffle = () => {
   return useMutation({
-    mutationFn: (id: number) => DeleteRaffle(id),
+    mutationFn: (id: string) => DeleteRaffle(id),
     onSuccess: () => {
       toast.success("Éxito", {
         description: "Rifa eliminada correctamente",
