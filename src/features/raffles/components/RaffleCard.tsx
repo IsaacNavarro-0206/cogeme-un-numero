@@ -1,97 +1,18 @@
 import {
   CalendarDays,
   CircleDollarSign,
-  Edit2,
-  Eye,
   Gift,
   PlusCircle,
-  Share2,
   Ticket,
-  Trash2,
 } from "lucide-react";
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { useState } from "react";
-import { getUserId } from "@/utils/auth";
-import { useDeleteRaffle } from "../hooks";
+import RaffleActions from "./RaffleActions";
 
 interface RaffleCardProps {
   raffles: Raffle[];
 }
 
 const RaffleCard: React.FC<RaffleCardProps> = ({ raffles }) => {
-  const [raffleToDelete, setRaffleToDelete] = useState<number>(0);
-
-  const deleteRaffleMutation = useDeleteRaffle();
-
-  const deleteRaffle = () => {
-    deleteRaffleMutation.mutate(raffleToDelete);
-  };
-
-  const alertDialogDelete = (id: number) => (
-    <AlertDialogTrigger>
-      <Button
-        variant="destructive"
-        size="icon"
-        onClick={() => setRaffleToDelete(id)}
-      >
-        <Trash2 className="h-4 w-4" />
-      </Button>
-
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-
-          <AlertDialogDescription>
-            Esta acción no se puede deshacer. Se eliminará la rifa
-            permanentemente.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-
-          <AlertDialogAction onPress={deleteRaffle} className="bg-destructive">
-            Eliminar
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialogTrigger>
-  );
-
-  const shareLinkRaffleSheet = (
-    raffleId: number,
-    userId: string | undefined,
-  ) => {
-    const link = `${window.location.origin}/choose-number/${raffleId}/${userId}`;
-
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        toast.success("Enlace copiado", {
-          description:
-            "El enlace para seleccionar número ha sido copiado al portapapeles.",
-        });
-      })
-      .catch(() => {
-        toast.error("Error", {
-          description:
-            "No se pudo copiar el enlace. Por favor, inténtalo de nuevo.",
-        });
-      });
-  };
-
   return raffles.length === 0 ? (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
       <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -169,30 +90,8 @@ const RaffleCard: React.FC<RaffleCardProps> = ({ raffles }) => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 md:border-l md:pl-6">
-              <Button
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors"
-                onClick={() => shareLinkRaffleSheet(raffle.id, getUserId())}
-              >
-                <Share2 className="w-4 h-4" />
-              </Button>
-
-              <Link
-                to={`/edit-raffle/${raffle.id}`}
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
-              >
-                <Edit2 className="w-4 h-4" />
-              </Link>
-
-              <Link
-                to={`/my-raffle/${raffle.id}`}
-                state={{ raffle }}
-                className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-              </Link>
-
-              {alertDialogDelete(raffle.id)}
+            <div className="flex items-center justify-end md:border-l md:pl-6">
+              <RaffleActions raffle={raffle} />
             </div>
           </div>
         </div>
