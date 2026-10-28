@@ -60,6 +60,7 @@ export function DataTable<TData extends RowData>({
               key={header.id}
               id={header.id}
               isRowHeader={header.index === 0}
+              className="text-center"
             >
               {header.isPlaceholder ? null : (
                 <table.FlexRender header={header} />
@@ -71,7 +72,7 @@ export function DataTable<TData extends RowData>({
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id} id={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell key={cell.id} className="text-center">
                   <table.FlexRender cell={cell} />
                 </TableCell>
               ))}
