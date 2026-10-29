@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { GetUser, UpdateUser, DeleteUser } from "../services/profile";
 import { queryClient } from "@/config/queryClient";
 
-export const useGetUser = (id: number) => {
+export const useGetUser = (id: string) => {
   return useQuery({
     queryKey: ["user", id],
     queryFn: () => GetUser(id).then((res) => res.data),
