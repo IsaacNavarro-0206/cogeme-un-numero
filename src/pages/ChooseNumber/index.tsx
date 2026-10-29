@@ -7,8 +7,8 @@ import { useParams } from "react-router-dom";
 const ChooseNumber = () => {
   const { raffleId, userId } = useParams();
 
-  const { data: raffle } = useRaffle(Number(raffleId));
-  const { data: user } = useGetUser(Number(userId));
+  const { data: raffle } = useRaffle(String(raffleId));
+  const { data: user } = useGetUser(String(userId));
   const userName = user?.nombre || "";
 
   return (
