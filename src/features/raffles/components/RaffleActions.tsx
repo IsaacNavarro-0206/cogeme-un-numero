@@ -44,7 +44,7 @@ const RaffleActions: React.FC<RaffleActionsProps> = ({ raffle }) => {
   return (
     <div className="flex items-center justify-center gap-2">
       <Button
-        className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors"
         onClick={shareLinkRaffleSheet}
       >
         <Share2 className="w-4 h-4" />
@@ -52,7 +52,7 @@ const RaffleActions: React.FC<RaffleActionsProps> = ({ raffle }) => {
 
       <Link
         to={`/edit-raffle/${raffle.id}`}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
       </Link>
@@ -60,7 +60,7 @@ const RaffleActions: React.FC<RaffleActionsProps> = ({ raffle }) => {
       <Link
         to={`/my-raffle/${raffle.id}`}
         state={{ raffle }}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
       >
         <Eye className="w-4 h-4" />
       </Link>
