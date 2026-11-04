@@ -52,9 +52,9 @@ export function DataTable<TData extends RowData>({
   });
 
   return (
-    <div className="overflow-hidden rounded-md border">
-      <Table>
-        <TableHeader>
+    <div className="overflow-hidden rounded-md border border-secondary-foreground">
+      <Table className="border-b border-b-secondary-foreground">
+        <TableHeader className="bg-pink-600">
           {table.getFlatHeaders().map((header) => (
             <TableHead
               key={header.id}
