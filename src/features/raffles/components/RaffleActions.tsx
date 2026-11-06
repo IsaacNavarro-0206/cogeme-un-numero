@@ -52,7 +52,7 @@ const RaffleActions: React.FC<RaffleActionsProps> = ({ raffle }) => {
 
       <Link
         to={`/edit-raffle/${raffle.id}`}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-yellow-50 text-yellow-600 hover:bg-yellow-100 transition-colors"
       >
         <Edit2 className="w-4 h-4" />
       </Link>
@@ -60,7 +60,7 @@ const RaffleActions: React.FC<RaffleActionsProps> = ({ raffle }) => {
       <Link
         to={`/my-raffle/${raffle.id}`}
         state={{ raffle }}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-150 transition-colors"
       >
         <Eye className="w-4 h-4" />
       </Link>
