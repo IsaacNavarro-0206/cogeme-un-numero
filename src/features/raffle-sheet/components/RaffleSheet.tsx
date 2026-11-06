@@ -171,7 +171,10 @@ const RaffleSheet = ({
             )}
           </div>
 
-          <Button className="bg-pink-600 hover:bg-pink-700 text-white w-full">
+          <Button
+            className="bg-pink-600 hover:bg-pink-700 text-white w-full"
+            type="submit"
+          >
             {choosenNumbersMutation.isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
