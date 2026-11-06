@@ -7,7 +7,7 @@ import {
 } from "../services/raffleSheet";
 import { queryClient } from "@/config/queryClient";
 
-export const useGetChoosenNumber = (id: number) => {
+export const useGetChoosenNumber = (id: string) => {
   return useQuery({
     queryKey: ["choosen-number", id],
     queryFn: () => GetChoosenNumber(id).then((res) => res.data),
@@ -35,7 +35,7 @@ export const useChoosenNumbers = () => {
       const raffleId = response.data?.raffleId;
       if (raffleId) {
         queryClient.invalidateQueries({
-          queryKey: ["choosen-numbers", "raffle", String(raffleId)],
+          queryKey: ["choosen-numbers", "raffle", raffleId],
         });
       } else {
         queryClient.invalidateQueries({ queryKey: ["choosen-numbers"] });
@@ -46,7 +46,7 @@ export const useChoosenNumbers = () => {
 
 export const useUpdateStatusChoosenNumber = () => {
   return useMutation({
-    mutationFn: ({ data, id }: { data: any; id: number }) =>
+    mutationFn: ({ data, id }: { data: any; id: string }) =>
       UpdateStatusChoosenNumber(data, id),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
