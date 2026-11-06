@@ -4,7 +4,7 @@ import InfoItem from "@/components/InfoItem";
 
 interface RequestItemProps {
   request: RequestNumber;
-  onStatusUpdate: (id: number, status: string) => void;
+  onStatusUpdate: (id: string, status: string) => void;
 }
 
 const RequestItem = ({ request, onStatusUpdate }: RequestItemProps) => {

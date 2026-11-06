@@ -55,7 +55,7 @@ const RequestCard = () => {
    * @param status - Nuevo estado ('aceptado' o 'rechazado')
    */
   const handleRejectOrAcceptNumber = useCallback(
-    async (id: number, status: string) => {
+    async (id: string, status: string) => {
       try {
         await UpdateStatusChoosenNumber({ estado: status }, id);
         setRequests((prev) => prev.filter((request) => request.id !== id));
