@@ -7,6 +7,7 @@ import CreateRafflePage from "@/pages/CreateRaffle";
 import EditRafflePage from "@/pages/EditRaffle";
 import MyRaffles from "@/pages/MyRaffles";
 import MyRaffle from "@/pages/MyRaffle";
+import DashboardPage from "@/pages/Dashboard";
 import ProfilePage from "@/pages/Profile";
 import ChooseNumber from "@/pages/ChooseNumber";
 import { ProtectedRoute } from "@/utils/protectedRoute";
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MyRaffles />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <ProtectedRoute>
+            <DashboardPage />
           </ProtectedRoute>
         ),
       },
