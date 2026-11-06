@@ -17,7 +17,7 @@ const SignupForm = () => {
 
   return (
     <Card className="bg-white rounded-lg shadow-sm flex flex-col justify-center items-center mt-2.5 md:mt-10 w-3/4 md:w-auto">
-      <CardHeader className="flex flex-col items-center">
+      <CardHeader className="flex flex-col items-center w-full">
         <CardTitle className="font-semibold text-2xl text-center">
           Crea tu cuenta
         </CardTitle>
