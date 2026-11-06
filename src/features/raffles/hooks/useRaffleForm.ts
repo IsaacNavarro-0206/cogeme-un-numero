@@ -12,7 +12,7 @@ export const useRaffleForm = (isEditMode: boolean = false) => {
     useUpdateRaffle();
 
   const { id } = useParams();
-  const { data } = useRaffle(Number(id));
+  const { data } = useRaffle(String(id));
   const navigate = useNavigate();
 
   const form = useForm<RaffleFormData>({

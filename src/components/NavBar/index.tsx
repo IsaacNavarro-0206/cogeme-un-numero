@@ -65,8 +65,9 @@ const NavBar = () => {
           </Link>
         </div>
 
-        <div className="hidden lg:flex items-center justify-evenly w-1/4">
+        <div className="hidden lg:flex items-center justify-evenly w-1/3">
           <NavButton href="/my-raffles">Mis rifas</NavButton>
+          <NavButton href="/dashboard">Estadísticas</NavButton>
           <NavButton href={`/profile/${getUserId()}`}>Perfil</NavButton>
 
           <LogoutButton />
@@ -81,6 +82,10 @@ const NavBar = () => {
             <DropdownMenu className="w-56">
               <DropdownMenuItem onAction={() => navigate("/my-raffles")}>
                 Mis rifas
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onAction={() => navigate("/dashboard")}>
+                Estadísticas
               </DropdownMenuItem>
 
               <DropdownMenuItem

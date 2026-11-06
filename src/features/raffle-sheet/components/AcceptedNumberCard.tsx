@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePagination } from "@/hooks/usePagination";
 import PaginationControls from "@/components/PaginationControls";
-import { GetChoosenNumbers } from "@/service/choosenNumber";
+import { GetChoosenNumbers } from "../services/raffleSheet";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import EmptyState from "@/components/EmptyState";
@@ -9,27 +9,18 @@ import AcceptedNumberItem from "./AcceptedNumberItem";
 import { useParams } from "react-router-dom";
 
 const AcceptedNumberCard = () => {
-  // Estado para almacenar solo los números con estado "aceptado"
-  const [filteredAcceptedNumbers, setFilteredAcceptedNumbers] = useState<
-    RequestNumber[]
-  >([]);
+  const [acceptedNumbers, setAcceptedNumbers] = useState<RequestNumber[]>([]);
   const { id } = useParams();
 
   /**
-   * Efecto para cargar y filtrar los números aceptados
+   * Efecto para cargar los números aceptados
    * Se ejecuta al montar el componente o cuando cambia el ID de la rifa
    */
   useEffect(() => {
     const getChoosenNumbers = async () => {
       try {
-        const { data } = await GetChoosenNumbers(id);
-
-        const filteredNumbersByStatusAccepted = data.filter(
-          (acceptedNumber: RequestNumber) =>
-            acceptedNumber.estado === "aceptado",
-        );
-
-        setFilteredAcceptedNumbers(filteredNumbersByStatusAccepted);
+        const { data } = await GetChoosenNumbers(id, "aceptado");
+        setAcceptedNumbers(data);
       } catch (error) {
         console.log(error);
         toast.error("Error", {
@@ -44,7 +35,7 @@ const AcceptedNumberCard = () => {
   // Configuración de paginación para los números aceptados
   const { currentItems, currentPage, totalPages, nextPage, prevPage } =
     usePagination({
-      data: filteredAcceptedNumbers,
+      data: acceptedNumbers,
       itemsPerPage: 5,
     });
 

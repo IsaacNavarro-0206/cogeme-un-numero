@@ -54,12 +54,19 @@ const RaffleSheet = ({
   };
 
   const onSubmit = async (data: RaffleSheetFormData) => {
+    if (!raffleId) {
+      toast.error("Error", {
+        description: "No se encontró la rifa para seleccionar números.",
+      });
+      return;
+    }
+
     try {
       await Promise.all(
         selectedNumbers.map(async (selectedNumber: number) => {
           const obj = {
             numero: selectedNumber,
-            raffleId: Number(raffleId),
+            raffleId,
             nombre: data.name,
             numeroDeContacto: data.phone,
           };
@@ -164,7 +171,10 @@ const RaffleSheet = ({
             )}
           </div>
 
-          <Button className="bg-pink-600 hover:bg-pink-700 text-white w-full">
+          <Button
+            className="bg-pink-600 hover:bg-pink-700 text-white w-full"
+            type="submit"
+          >
             {choosenNumbersMutation.isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (

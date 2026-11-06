@@ -7,7 +7,7 @@ interface RaffleDataForm {
 }
 
 interface Raffle {
-  id: number;
+  id: string;
   numeroMaximo: number;
   fechaRifa: string;
   loteria: string;
@@ -16,7 +16,7 @@ interface Raffle {
 }
 
 interface RequestNumber {
-  id: number;
+  id: string;
   numero: number;
   nombre: string;
   numeroDeContacto: string;
@@ -36,3 +36,10 @@ type CreateRaffleType = {
 };
 
 type UpdateRaffleType = Omit<CreateRaffleType, "usuarioId">;
+
+interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+}

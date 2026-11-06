@@ -10,7 +10,7 @@ import {
 export const useEditProfileForm = (userId: string | undefined) => {
   const [isEnableInputs, setIsEnableInputs] = useState(false);
 
-  const { data: user } = useGetUser(Number(userId));
+  const { data: user } = useGetUser(String(userId));
   const updateUserMutation = useUpdateUser();
 
   const form = useForm<EditProfileFormData>({

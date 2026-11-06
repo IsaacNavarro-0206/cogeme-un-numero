@@ -10,15 +10,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-// import { DeleteUser } from "@/service/user";
+// import { DeleteUser } from "../services/profile";
 
 const ButtonDeleteProfile = () => {
   // const { id } = useParams();
 
   // const deleteUser = () => {
   //   try {
-  //     const userId: number = Number(id)
-  //     const res = DeleteUser(1);
+  //     if (!id) return;
+  //     const res = DeleteUser(id);
 
   //     console.log(res);
   //   } catch (error) {

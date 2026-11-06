@@ -22,7 +22,7 @@ function Layout() {
   }, [navigate]);
 
   return (
-    <div className="bg-gray-200 min-h-screen h-auto flex flex-col justify-start items-center">
+    <div className="bg-gray-100 min-h-screen h-auto flex flex-col justify-start items-center">
       {!isPublicRoute && <NavBar />}
 
       <Outlet />

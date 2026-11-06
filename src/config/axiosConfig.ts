@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/store/auth/slice";
 import axios from "axios";
-import { RefreshToken } from "@/service/auth";
+import { RefreshToken } from "@/features/auth/services/auth";
 
 declare module "axios" {
   export interface AxiosRequestConfig {

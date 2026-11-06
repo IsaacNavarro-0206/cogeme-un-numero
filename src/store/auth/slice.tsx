@@ -1,3 +1,4 @@
+import { queryClient } from "@/config/queryClient";
 import { navigate } from "@/utils/navigator";
 import { create } from "zustand";
 
@@ -27,6 +28,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.removeItem("refresh_token");
 
     set({ isAuthenticated: false, accessToken: null, refreshToken: null });
+    queryClient.clear();
     navigate("/login");
   },
 }));
