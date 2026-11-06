@@ -17,8 +17,8 @@ const ButtonDeleteProfile = () => {
 
   // const deleteUser = () => {
   //   try {
-  //     const userId: number = Number(id)
-  //     const res = DeleteUser(1);
+  //     if (!id) return;
+  //     const res = DeleteUser(id);
 
   //     console.log(res);
   //   } catch (error) {
