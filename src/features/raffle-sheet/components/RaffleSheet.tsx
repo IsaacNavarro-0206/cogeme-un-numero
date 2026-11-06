@@ -54,12 +54,19 @@ const RaffleSheet = ({
   };
 
   const onSubmit = async (data: RaffleSheetFormData) => {
+    if (!raffleId) {
+      toast.error("Error", {
+        description: "No se encontró la rifa para seleccionar números.",
+      });
+      return;
+    }
+
     try {
       await Promise.all(
         selectedNumbers.map(async (selectedNumber: number) => {
           const obj = {
             numero: selectedNumber,
-            raffleId: Number(raffleId),
+            raffleId,
             nombre: data.name,
             numeroDeContacto: data.phone,
           };
