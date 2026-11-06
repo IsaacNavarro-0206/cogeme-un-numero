@@ -6,15 +6,23 @@ import RaffleTable from "./RaffleTable";
 import { useRaffles } from "../hooks";
 import { Loader2, Ticket } from "lucide-react";
 import { Link } from "react-router-dom";
+import Filters from "./Filters";
+import { RaffleFilters } from "../services/raffle";
 
 const MyRaffles = () => {
+  const [filters, setFilters] = useState<RaffleFilters>({
+    loteria: "",
+    fechaDesde: "",
+    fechaHasta: "",
+  });
+
   // Estado compartido por la tabla (desktop) y las tarjetas (mobile)
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
   });
 
-  const { data, isPending } = useRaffles(pagination);
+  const { data, isPending } = useRaffles(pagination, filters);
   const raffles = data?.data ?? [];
   const total = data?.total ?? 0;
   const totalPages = Math.max(Math.ceil(total / pagination.pageSize), 1);
@@ -28,6 +36,13 @@ const MyRaffles = () => {
 
   const goToPage = (pageIndex: number) =>
     setPagination((prev) => ({ ...prev, pageIndex }));
+
+  const handleFiltersChange = (nextFilters: RaffleFilters) => {
+    setFilters(nextFilters);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
+
+  const hasActiveFilters = Object.values(filters).some(Boolean);
 
   return (
     <div className="mb-5 max-w-5xl w-11/12">
@@ -43,12 +58,20 @@ const MyRaffles = () => {
         </Link>
       </div>
 
+      <Filters filters={filters} onChange={handleFiltersChange} />
+
       {isPending ? (
         <div className="flex justify-center items-center h-[400px]">
           <Loader2 className="h-[200px] w-[200px] animate-spin text-pink-600" />
         </div>
       ) : total === 0 ? (
-        <RaffleCard raffles={[]} />
+        hasActiveFilters ? (
+          <div className="rounded-xl border border-gray-200 bg-white p-8 text-center text-gray-500">
+            No hay rifas que coincidan con los filtros.
+          </div>
+        ) : (
+          <RaffleCard raffles={[]} />
+        )
       ) : (
         <>
           {/* Desktop: tabla con paginación del servidor */}
