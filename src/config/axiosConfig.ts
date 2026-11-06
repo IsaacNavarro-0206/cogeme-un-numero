@@ -13,7 +13,7 @@ declare module "axios" {
 
 // Crear una instancia de axios con la URL base configurada
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL_LOCAL,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Variables para manejar la cola de peticiones durante el refresh del token
