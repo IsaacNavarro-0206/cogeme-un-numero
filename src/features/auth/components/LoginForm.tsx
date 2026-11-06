@@ -17,7 +17,7 @@ const LoginForm = () => {
 
   return (
     <Card className="bg-white rounded-lg shadow-sm flex flex-col justify-center items-center sm:w-11/12 md:w-1/2 lg:w-auto mt-10">
-      <CardHeader>
+      <CardHeader className="w-full text-center">
         <CardTitle className="font-semibold text-2xl">Ingresar</CardTitle>
       </CardHeader>
 

@@ -26,9 +26,13 @@ export function UpdateStatusChoosenNumber(data: StatusData, id: string) {
   return axiosInstance.patch(`/choosen-number/${id}`, data);
 }
 
-export function GetChoosenNumbers(id: string | undefined) {
+export function GetChoosenNumbers(
+  id: string | undefined,
+  estado?: "pendiente" | "aceptado" | "rechazado",
+) {
   return axiosInstance.get<ChoosenNumber[]>(`/choosen-number/raffle/${id}`, {
     _skipAuth: true,
+    ...(estado ? { params: { estado } } : {}),
   });
 }
 

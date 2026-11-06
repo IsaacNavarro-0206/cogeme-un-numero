@@ -4,9 +4,12 @@ import { toast } from "sonner";
 import {
   GetRaffle,
   GetRaffles,
+  GetRaffleStats,
+  GetUserRafflesStats,
   CreateRaffle,
   UpdateRaffle,
   DeleteRaffle,
+  type RaffleFilters,
 } from "../services/raffle";
 import { queryClient } from "@/config/queryClient";
 
@@ -18,15 +21,37 @@ export const useRaffle = (id: string) => {
   });
 };
 
-export const useRaffles = ({ pageIndex, pageSize }: PaginationState) => {
+export const useRaffles = (
+  { pageIndex, pageSize }: PaginationState,
+  filters: RaffleFilters,
+) => {
   return useQuery({
-    queryKey: ["raffles", "user", { pageIndex, pageSize }],
+    queryKey: ["raffles", "user", { pageIndex, pageSize, filters }],
     queryFn: () =>
-      GetRaffles({ limit: pageSize, offset: pageIndex * pageSize }).then(
-        (res) => res.data,
-      ),
+      GetRaffles({
+        limit: pageSize,
+        offset: pageIndex * pageSize,
+        ...(filters.loteria.trim() ? { loteria: filters.loteria.trim() } : {}),
+        ...(filters.fechaDesde ? { fechaDesde: filters.fechaDesde } : {}),
+        ...(filters.fechaHasta ? { fechaHasta: filters.fechaHasta } : {}),
+      }).then((res) => res.data),
     // Mantiene la página anterior visible mientras carga la siguiente
     placeholderData: keepPreviousData,
+  });
+};
+
+export const useRaffleStats = (id: string | undefined) => {
+  return useQuery({
+    queryKey: ["raffle", id, "stats"],
+    queryFn: () => GetRaffleStats(id as string).then((res) => res.data),
+    enabled: !!id,
+  });
+};
+
+export const useUserRafflesStats = () => {
+  return useQuery({
+    queryKey: ["raffles", "stats"],
+    queryFn: () => GetUserRafflesStats().then((res) => res.data),
   });
 };
 
